@@ -33,40 +33,54 @@ print('\n   YOU HAVE 10 ATTEMPTS')
 
 
 # 2. Generate a 3 digit secret number
-
-three_digit_number = []
-for num in range(3):
-    rand_num=random.randint(0,9)
-    three_digit_number.append(rand_num)
+def get_three_digit_number():
+    three_digit_number = []
+    for num in range(3):
+        rand_num=random.randint(0,9)
+        three_digit_number.append(rand_num)
+        
+    print(f'Create list{three_digit_number}') #to be removed
     
-print(f'Create list{three_digit_number}')
+    return three_digit_number
 
 
 # 3. Ask user to enter the 3 digit secret number
-user_input = input('Enter a 3 digit number >> ')
+def get_user_input():
+    user_input = input('Enter a 3 digit number >> ')
 
-print(f' Guess #{1} {user_input}')
-# 4. After receiving the input show hints
+    print(f' Guess #{1} {user_input}')
+    # 4. After receiving the input show hints
 
-user_input=list(user_input) # returns a list of strings
+    user_input=[int(x) for x in user_input] # process the input
 
-print(user_input)
+    print(user_input)
+    
+    return user_input
 
-def counter(d,v):
-    if v in d:
-        d[v]+=1
-    else: d[v]=1
+def compare(user_input, three_digit_number):
+    hints = []
+    #base case
+    if user_input==three_digit_number:
+        print('Great you got it correct')
+        return 'correct'
+    else:
+        for num in range(len(user_input)):
+            if user_input[num]==three_digit_number[num]:
+            #correct input at the same index
+                hints.append('Fermi')
+            #correct input at different position
+            elif user_input[num] in three_digit_number:
+                hints.append('Pico')
+            
+    if len(hints)==0:
+        print('Bagels')
+    else: hints.sort()
 
-hints = {}
-for id_ai, num in enumerate(three_digit_number):
-    for id_user, num_str in enumerate(user_input):
-        if id_ai==id_user and num==int(num_str): #convert num str for comparison
-            counter(hints,'Fermi')
-        elif id_ai!=id_user and num==int(num_str):
-           counter(hints,'Pico')
-        else: counter(hints,'Bagels')
+    return ' '.join(hints)
 
-print(hints)
+
+
+#print(hints)
         
         
 
@@ -82,3 +96,25 @@ print(hints)
 #   c. Bagels no correct answer.    
 
 # Repeat for 10 times
+
+
+def main():
+    num_iterations=10
+    
+    #generate the 3 digit number
+    three_digit_number=get_three_digit_number()
+    
+    attempts=0
+    while attempts < num_iterations:
+        user_input=get_user_input()
+        results=compare(user_input,three_digit_number)
+        if 'correct' in results:
+            break
+        attempts += 1
+        print(f'{results}\nyou have {10-attempts} attempts left')
+        
+if __name__ == "__main__":
+    main()
+    
+    
+    
