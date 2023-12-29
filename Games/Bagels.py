@@ -99,19 +99,32 @@ def compare(user_input, three_digit_number):
 
 
 def main():
-    num_iterations=10
+    while True:
+        num_iterations=10
+        
+        #generate the 3 digit number
+        three_digit_number=get_three_digit_number()
+        
+        attempts=0
+        while attempts < num_iterations:
+            user_input=get_user_input()
+            results=compare(user_input,three_digit_number)
+            if 'correct' in results:
+                break
+            attempts += 1
+            print(f'{results}\nyou have {10-attempts} attempts left')
+        prompt=input('Would you want to play again: yes/no').lower()
+        if prompt.startswith('y'):
+            continue
+        else: break
+    print('Thanks for playing')
+
+            
+        
+#Ask User if they want to play again
+
+
     
-    #generate the 3 digit number
-    three_digit_number=get_three_digit_number()
-    
-    attempts=0
-    while attempts < num_iterations:
-        user_input=get_user_input()
-        results=compare(user_input,three_digit_number)
-        if 'correct' in results:
-            break
-        attempts += 1
-        print(f'{results}\nyou have {10-attempts} attempts left')
         
 if __name__ == "__main__":
     main()
